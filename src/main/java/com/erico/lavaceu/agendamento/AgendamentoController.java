@@ -1,6 +1,6 @@
-package com.erico.controller;
+package com.erico.lavaceu.agendamento;
 
-import com.erico.dto.CreateAgendamentoDto;
+import com.erico.lavaceu.agendamento.dto.CreateAgendamentoDto;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
