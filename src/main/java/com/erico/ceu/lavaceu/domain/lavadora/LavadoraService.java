@@ -19,10 +19,7 @@ public class LavadoraService {
 
     public List<LavadoraResponse> getLavadoras() {
         List<Lavadora> lavadoras = lavadoraRepository.findAll();
-
-        return lavadoras.stream()
-                .map(LavadoraResponse::fromMaquinaEntity)
-                .toList();
+        return lavadoras.stream().map(LavadoraResponse::fromMaquinaEntity).toList();
     }
 
     public LavadoraResponse getLavadoraById(UUID id) {

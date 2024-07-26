@@ -17,6 +17,7 @@ public class Lavadora {
 
     private Integer numero;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     private Long tempoLavagem;

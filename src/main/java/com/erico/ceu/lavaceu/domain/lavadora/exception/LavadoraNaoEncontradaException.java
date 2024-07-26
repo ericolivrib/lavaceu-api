@@ -9,4 +9,5 @@ public class LavadoraNaoEncontradaException extends RuntimeException {
     public LavadoraNaoEncontradaException() {
         super("Máquina de lavar não encontrada");
     }
+
 }

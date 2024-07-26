@@ -28,6 +28,7 @@ public class Usuario {
     private List<Agendamento> agendamentos;
 
     @ManyToOne
+    @JoinColumn(name = "permissao_id")
     private Permissao permissao;
 
     public Usuario() {

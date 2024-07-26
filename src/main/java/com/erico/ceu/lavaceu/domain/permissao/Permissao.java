@@ -13,6 +13,7 @@ public class Permissao {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
     private Values valor;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)

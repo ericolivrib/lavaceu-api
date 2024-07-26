@@ -2,6 +2,7 @@ package com.erico.ceu.lavaceu.domain.usuario;
 
 import com.erico.ceu.lavaceu.domain.usuario.dto.CriarUsuarioRequest;
 import com.erico.ceu.lavaceu.domain.usuario.dto.UsuarioResponse;
+import com.erico.ceu.lavaceu.util.ControllerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class UsuarioController {
     @PostMapping(path = "", consumes = "application/json")
     public ResponseEntity<Void> cadastrarUsuario(@RequestBody CriarUsuarioRequest request) {
         UUID usuarioId = usuarioService.cadastrarUsuarios(request);
-        URI location = URI.create("/usuarios/" + usuarioId);
+        var location = ControllerUtils.buildResourceLocationUri("/{usuarioId}", usuarioId);
 
         return ResponseEntity.created(location).build();
     }

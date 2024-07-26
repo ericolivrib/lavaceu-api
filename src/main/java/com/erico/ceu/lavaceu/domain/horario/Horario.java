@@ -1,6 +1,7 @@
 package com.erico.ceu.lavaceu.domain.horario;
 
 import com.erico.ceu.lavaceu.domain.agendamento.Agendamento;
+import com.erico.ceu.lavaceu.domain.horario.exception.PeriodoDiaInvalidoException;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
@@ -14,31 +15,35 @@ public class Horario {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private DiaSemana diaSemana;
 
-    @Enumerated(EnumType.ORDINAL)
-    private Status status;
+    @Enumerated(EnumType.STRING)
+    private PeriodoDia periodoDia;
 
     private LocalTime hora;
+
+    @ManyToOne
+    private HorarioDisponivel horarioDisponivel;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<Agendamento> agendamentos;
 
-    public enum Status {
-        LIBERADO,
-        BLOQUEADO,
-        OCUPADO
-    }
-
     public Horario() {
     }
 
-    public Horario(UUID id, DiaSemana diaSemana, Status status, LocalTime hora) {
+    public Horario(UUID id, DiaSemana diaSemana, PeriodoDia periodoDia, LocalTime hora) {
         this.id = id;
         this.diaSemana = diaSemana;
-        this.status = status;
+        this.periodoDia = periodoDia;
         this.hora = hora;
+    }
+
+    public Horario(UUID id, DiaSemana diaSemana, LocalTime hora) throws PeriodoDiaInvalidoException {
+        this.id = id;
+        this.diaSemana = diaSemana;
+        this.hora = hora;
+        this.setPeriodoDia(hora);
     }
 
     public UUID getId() {
@@ -57,12 +62,24 @@ public class Horario {
         this.diaSemana = diaSemana;
     }
 
-    public Status getStatus() {
-        return status;
+    public PeriodoDia getPeriodoDia() {
+        return periodoDia;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setPeriodoDia(PeriodoDia periodoDia) {
+        this.periodoDia = periodoDia;
+    }
+
+    public void setPeriodoDia(LocalTime hora) throws PeriodoDiaInvalidoException {
+        if ((hora.equals(PeriodoDia.MANHA.getHoraInicial()) || hora.isAfter(PeriodoDia.MANHA.getHoraInicial())) && hora.isBefore(PeriodoDia.MANHA.getHoraFinal())) {
+            setPeriodoDia(PeriodoDia.MANHA);
+        } else if ((hora.equals(PeriodoDia.TARDE.getHoraInicial()) || hora.isAfter(PeriodoDia.TARDE.getHoraInicial())) && hora.isBefore(PeriodoDia.TARDE.getHoraFinal())) {
+            setPeriodoDia(PeriodoDia.TARDE);
+        } else if ((hora.equals(PeriodoDia.NOITE.getHoraInicial()) || hora.isAfter(PeriodoDia.NOITE.getHoraInicial())) && hora.isBefore(PeriodoDia.NOITE.getHoraFinal())) {
+            setPeriodoDia(PeriodoDia.NOITE);
+        } else {
+            throw new PeriodoDiaInvalidoException();
+        }
     }
 
     public LocalTime getHora() {
@@ -71,6 +88,14 @@ public class Horario {
 
     public void setHora(LocalTime hora) {
         this.hora = hora;
+    }
+
+    public HorarioDisponivel getHorarioDisponivel() {
+        return horarioDisponivel;
+    }
+
+    public void setHorarioDisponivel(HorarioDisponivel horarioDisponivel) {
+        this.horarioDisponivel = horarioDisponivel;
     }
 
     public List<Agendamento> getAgendamentos() {

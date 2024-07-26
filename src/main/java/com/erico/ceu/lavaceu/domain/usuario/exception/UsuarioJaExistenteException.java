@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.CONFLICT, reason = "Usuário já existente")
-public class UsuarioExistenteException extends RuntimeException {
+public class UsuarioJaExistenteException extends RuntimeException {
 
-    public UsuarioExistenteException() {
+    public UsuarioJaExistenteException() {
         super("Usuário já existente");
     }
 
