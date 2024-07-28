@@ -30,11 +30,22 @@ public class Agendamento {
     private Status status;
 
     public enum Status {
-        DISPONIBILIZADO,    // Morador disponibilizou seu horário
-        FUTURO,             // Agendamento futuro
-        AUSENTE,            // Morador não compareceu
-        ATRASADO,           // Morador está atrasado
-        CONCLUIDO           // Morador lavou suas roupas
+        DISPONIBILIZADO("Disponibilizado"), // Morador disponibilizou seu horário
+        AGENDADO("Agendado"),               // Agendamento futuro
+        AUSENTE("Não comparecido"),         // Morador não compareceu
+        ATRASADO("Usuário atrasado"),       // Morador está atrasado
+        CONCLUIDO("Concluído");             // Morador lavou suas roupas
+
+        private final String nome;
+
+
+        Status(String nome) {
+            this.nome = nome;
+        }
+
+        public String getNome() {
+            return nome;
+        }
     }
 
     public Agendamento() {

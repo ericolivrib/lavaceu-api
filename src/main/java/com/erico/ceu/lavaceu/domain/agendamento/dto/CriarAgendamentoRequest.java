@@ -15,7 +15,7 @@ public record CriarAgendamentoRequest(UUID usuarioId, UUID horarioLiberadoId) {
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
 
-        return new Agendamento(UUID.randomUUID(), horarioLiberado, usuario, Agendamento.Status.FUTURO);
+        return new Agendamento(UUID.randomUUID(), horarioLiberado, usuario, Agendamento.Status.AGENDADO);
     }
 
 }
