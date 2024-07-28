@@ -6,14 +6,11 @@ import com.erico.ceu.lavaceu.domain.usuario.Usuario;
 
 import java.util.UUID;
 
-public record CriarAgendamentoRequest(
-        UUID usuarioId,
-        UUID horarioDisponivelId
-) {
+public record CriarAgendamentoRequest(UUID usuarioId, UUID horarioLiberadoId) {
 
     public Agendamento toEntity() {
         HorarioLiberado horarioLiberado = new HorarioLiberado();
-        horarioLiberado.setId(horarioDisponivelId);
+        horarioLiberado.setId(horarioLiberadoId);
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);

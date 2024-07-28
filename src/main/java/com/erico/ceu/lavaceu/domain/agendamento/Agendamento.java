@@ -1,6 +1,6 @@
 package com.erico.ceu.lavaceu.domain.agendamento;
 
-import com.erico.ceu.lavaceu.domain.horario.HorarioDisponivel;
+import com.erico.ceu.lavaceu.domain.horario.HorarioLiberado;
 import com.erico.ceu.lavaceu.domain.lavadora.Lavadora;
 import com.erico.ceu.lavaceu.domain.usuario.Usuario;
 import jakarta.persistence.*;
@@ -15,8 +15,8 @@ public class Agendamento {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "horario_disponivel_id")
-    private HorarioDisponivel horarioDisponivel;
+    @JoinColumn(name = "horario_liberado_id")
+    private HorarioLiberado horarioLiberado;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -40,9 +40,9 @@ public class Agendamento {
     public Agendamento() {
     }
 
-    public Agendamento(UUID id, HorarioDisponivel horarioDisponivel, Usuario usuario, Status status) {
+    public Agendamento(UUID id, HorarioLiberado horarioLiberado, Usuario usuario, Status status) {
         this.id = id;
-        this.horarioDisponivel = horarioDisponivel;
+        this.horarioLiberado = horarioLiberado;
         this.usuario = usuario;
         this.status = status;
     }
@@ -55,12 +55,12 @@ public class Agendamento {
         this.id = id;
     }
 
-    public HorarioDisponivel getHorarioDisponivel() {
-        return horarioDisponivel;
+    public HorarioLiberado getHorarioDisponivel() {
+        return horarioLiberado;
     }
 
-    public void setHorarioDisponivel(HorarioDisponivel horario) {
-        this.horarioDisponivel = horario;
+    public void setHorarioDisponivel(HorarioLiberado horario) {
+        this.horarioLiberado = horario;
     }
 
     public Usuario getMorador() {

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface HorarioDisponivelRepository extends JpaRepository<HorarioDisponivel, UUID> {
+public interface HorarioLiberadoRepository extends JpaRepository<HorarioLiberado, UUID> {
 
-    List<HorarioDisponivel> findByHorarioId(UUID horarioId);
+    List<HorarioLiberado> findByHorarioId(UUID horarioId);
 
 }

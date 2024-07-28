@@ -24,7 +24,7 @@ public class Horario {
     private LocalTime hora;
 
     @ManyToOne
-    private HorarioDisponivel horarioDisponivel;
+    private HorarioLiberado horarioLiberado;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<Agendamento> agendamentos;
@@ -90,12 +90,12 @@ public class Horario {
         this.hora = hora;
     }
 
-    public HorarioDisponivel getHorarioDisponivel() {
-        return horarioDisponivel;
+    public HorarioLiberado getHorarioDisponivel() {
+        return horarioLiberado;
     }
 
-    public void setHorarioDisponivel(HorarioDisponivel horarioDisponivel) {
-        this.horarioDisponivel = horarioDisponivel;
+    public void setHorarioDisponivel(HorarioLiberado horarioLiberado) {
+        this.horarioLiberado = horarioLiberado;
     }
 
     public List<Agendamento> getAgendamentos() {
