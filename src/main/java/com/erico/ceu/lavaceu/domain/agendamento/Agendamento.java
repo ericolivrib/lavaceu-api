@@ -37,6 +37,16 @@ public class Agendamento {
         CONCLUIDO           // Morador lavou suas roupas
     }
 
+    public Agendamento() {
+    }
+
+    public Agendamento(UUID id, HorarioDisponivel horarioDisponivel, Usuario usuario, Status status) {
+        this.id = id;
+        this.horarioDisponivel = horarioDisponivel;
+        this.usuario = usuario;
+        this.status = status;
+    }
+
     public UUID getId() {
         return id;
     }
