@@ -10,11 +10,9 @@ import java.util.UUID;
 public class Permissao {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private Integer id;
 
-    @Enumerated(EnumType.STRING)
-    private Values valor;
+    private String valor;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<Usuario> usuarios;
@@ -27,22 +25,23 @@ public class Permissao {
     }
 
     public Permissao(Values valor) {
-        this.valor = valor;
+        this.id = valor.ordinal();
+        this.valor = valor.name();
     }
 
-    public UUID getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Values getValor() {
+    public String getValor() {
         return valor;
     }
 
-    public void setValor(Values valor) {
+    public void setValor(String valor) {
         this.valor = valor;
     }
 
