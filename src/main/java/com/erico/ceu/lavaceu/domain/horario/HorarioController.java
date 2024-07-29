@@ -30,7 +30,7 @@ public class HorarioController {
 
     @PostMapping(path = "/horarios/{horarioId}")
     public ResponseEntity<Void> liberarHorario(@RequestBody LiberarHorarioRequest request, @PathVariable("horarioId") UUID horarioId) {
-        UUID horarioDisponivelId = horarioService.liberaHorario(request, horarioId);
+        UUID horarioDisponivelId = horarioService.liberarHorario(request, horarioId);
         var horarioDisponivelLocation = ControllerUtils.buildResourceLocationUri("/{horarioLiberadoId}", horarioDisponivelId);
 
         return ResponseEntity.created(horarioDisponivelLocation).build();
