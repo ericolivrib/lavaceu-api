@@ -90,11 +90,11 @@ public class Horario {
         this.hora = hora;
     }
 
-    public HorarioLiberado getHorarioDisponivel() {
+    public HorarioLiberado getHorarioLiberado() {
         return horarioLiberado;
     }
 
-    public void setHorarioDisponivel(HorarioLiberado horarioLiberado) {
+    public void setHorarioLiberado(HorarioLiberado horarioLiberado) {
         this.horarioLiberado = horarioLiberado;
     }
 

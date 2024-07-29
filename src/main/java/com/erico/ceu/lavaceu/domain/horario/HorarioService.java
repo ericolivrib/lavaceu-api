@@ -1,5 +1,6 @@
 package com.erico.ceu.lavaceu.domain.horario;
 
+import com.erico.ceu.lavaceu.domain.agendamento.AgendamentoRepository;
 import com.erico.ceu.lavaceu.domain.horario.dto.CriarHorarioRequest;
 import com.erico.ceu.lavaceu.domain.horario.dto.HorarioResponse;
 import com.erico.ceu.lavaceu.domain.horario.dto.LiberarHorarioRequest;
@@ -19,10 +20,12 @@ public class HorarioService {
 
     private final HorarioRepository horarioRepository;
     private final HorarioLiberadoRepository horarioLiberadoRepository;
+    private final AgendamentoRepository agendamentoRepository;
 
-    public HorarioService(HorarioRepository horarioRepository, HorarioLiberadoRepository horarioLiberadoRepository) {
+    public HorarioService(HorarioRepository horarioRepository, HorarioLiberadoRepository horarioLiberadoRepository, AgendamentoRepository agendamentoRepository) {
         this.horarioRepository = horarioRepository;
         this.horarioLiberadoRepository = horarioLiberadoRepository;
+        this.agendamentoRepository = agendamentoRepository;
     }
 
     public UUID adicionarHorario(CriarHorarioRequest criarHorarioRequest) {
@@ -49,8 +52,18 @@ public class HorarioService {
         return horarios.stream().map(HorarioResponse::fromHorarioEntity).toList();
     }
 
-    public void deletarHorario(UUID id) {
-        horarioRepository.deleteById(id);
+    public void deletarHorario(UUID horarioId) {
+        Horario horario = horarioRepository.findById(horarioId).orElseThrow(() -> {
+            log.error("Tentativa de remoção de horário inexistente");
+            return new HorarioNaoEncontradoException();
+        });
+
+        if (horarioLiberadoRepository.existsByHorarioId(horarioId)) {
+            log.error("Tentativa de remoção de horário presente em agendamentos");
+            throw new HorarioEmUsoException();
+        }
+
+        horarioRepository.delete(horario);
     }
 
     public UUID liberarHorario(LiberarHorarioRequest liberarHorarioRequest, UUID horarioId) {

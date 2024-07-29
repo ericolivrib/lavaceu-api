@@ -14,4 +14,6 @@ public interface HorarioLiberadoRepository extends JpaRepository<HorarioLiberado
 
     boolean existsByHorarioIdAndData(UUID horarioId, LocalDate data);
 
+    boolean existsByHorarioId(UUID horarioId);
+
 }
