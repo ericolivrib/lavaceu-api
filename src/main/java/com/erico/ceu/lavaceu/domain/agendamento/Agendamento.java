@@ -31,10 +31,11 @@ public class Agendamento {
 
     public enum Status {
         DISPONIBILIZADO("Disponibilizado"), // Morador disponibilizou seu horário
-        AGENDADO("Agendado"),               // Agendamento futuro
+        AGENDADO("Agendado"),               // Agendado pelo usuário
         AUSENTE("Não comparecido"),         // Morador não compareceu
         ATRASADO("Usuário atrasado"),       // Morador está atrasado
-        CONCLUIDO("Concluído");             // Morador lavou suas roupas
+        CONCLUIDO("Concluído"),             // Morador lavou suas roupas
+        CONFIRMADO("Confirmado");           // Agendamento confirmado pelo bolsista
 
         private final String nome;
 
@@ -82,11 +83,11 @@ public class Agendamento {
         this.usuario = usuario;
     }
 
-    public Lavadora getMaquina() {
+    public Lavadora getLavadora() {
         return lavadora;
     }
 
-    public void setMaquina(Lavadora lavadora) {
+    public void setLavadora(Lavadora lavadora) {
         this.lavadora = lavadora;
     }
 
