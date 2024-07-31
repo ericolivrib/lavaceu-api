@@ -34,3 +34,6 @@ build/
 
 ### H2 ###
 /data/
+
+### Properties ###
+/src/main/resources/application-test.properties
