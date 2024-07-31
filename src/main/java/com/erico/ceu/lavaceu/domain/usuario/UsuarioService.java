@@ -41,8 +41,7 @@ public class UsuarioService {
             throw new UsuarioJaExistenteException();
         }
 
-        Usuario novoUsuario = criarUsuarioRequest.toMoradorEntity();
-        var usuarioSalvo = usuarioRepository.save(novoUsuario);
+        var usuarioSalvo = usuarioRepository.save(criarUsuarioRequest.toMoradorEntity());
 
         return usuarioSalvo.getId();
     }

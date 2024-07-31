@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-public class HorarioDisponivel {
+public class HorarioLiberado {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -26,13 +26,14 @@ public class HorarioDisponivel {
         CANCELADO
     }
 
-    public HorarioDisponivel() {
+    public HorarioLiberado() {
     }
 
-    public HorarioDisponivel(UUID id, Horario horario, LocalDate data) {
+    public HorarioLiberado(UUID id, Horario horario, LocalDate data, Status status) {
         this.id = id;
         this.horario = horario;
         this.data = data;
+        this.status = status;
     }
 
     public UUID getId() {
