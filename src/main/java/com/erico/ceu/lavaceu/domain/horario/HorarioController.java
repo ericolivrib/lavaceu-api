@@ -2,6 +2,7 @@ package com.erico.ceu.lavaceu.domain.horario;
 
 import com.erico.ceu.lavaceu.domain.horario.dto.CriarHorarioRequest;
 import com.erico.ceu.lavaceu.domain.horario.dto.HorarioResponse;
+import com.erico.ceu.lavaceu.domain.horario.dto.LiberarHorarioRequest;
 import com.erico.ceu.lavaceu.util.ControllerUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,14 @@ public class HorarioController {
         var location = ControllerUtils.buildResourceLocationUri("/{horarioId}", horarioId);
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PostMapping(path = "/horarios/{horarioId}")
+    public ResponseEntity<Void> liberarHorario(@RequestBody LiberarHorarioRequest request, @PathVariable("horarioId") UUID horarioId) {
+        UUID horarioDisponivelId = horarioService.liberarHorario(request, horarioId);
+        var horarioDisponivelLocation = ControllerUtils.buildResourceLocationUri("/{horarioLiberadoId}", horarioDisponivelId);
+
+        return ResponseEntity.created(horarioDisponivelLocation).build();
     }
 
     @GetMapping(path = "/horarios", produces = "application/json")
