@@ -40,10 +40,10 @@ public class AgendamentoService {
         });
 
         if (horarioLiberado.getStatus() == HorarioLiberado.Status.OCUPADO) {
-            log.error("Tentativa de cadastro de agendamento com horário ocupado, {}", horarioLiberado.getHorario());
+            log.error("Horário ocupado");
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Horário ocupado");
         } else if (horarioLiberado.getStatus() == HorarioLiberado.Status.CANCELADO) {
-            log.error("Tentativa de cadastro de agendamento com horário cancelado");
+            log.error("Horário cancelado");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Horário cancelado");
         }
 
@@ -61,22 +61,22 @@ public class AgendamentoService {
 
     public void confirmarAgendamento(ConfirmarAgendamentoRequest confirmarAgendamentoRequest, UUID agendamentoId) {
         Agendamento agendamento = agendamentoRepository.findById(agendamentoId).orElseThrow(() -> {
-            log.error("Tentativa de confirmação de agendamento não existente");
+            log.error("Agendamento não encontrado");
             return new ResponseStatusException(HttpStatus.NOT_FOUND, "Agendamento não encontrado");
         });
 
         if (agendamento.getStatus() != Agendamento.Status.AGENDADO) {
-            log.error("Tentativa de confirmação de horário não agendado");
+            log.error("Horário não agendado");
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Horário não agendado");
         }
 
         Lavadora lavadora = lavadoraRepository.findById(confirmarAgendamentoRequest.lavadoraId()).orElseThrow(() -> {
-            log.error("Tentativa de escolha de lavadora não existente");
+            log.error("Lavadora não encontrada");
             return new ResponseStatusException(HttpStatus.NOT_FOUND, "Lavadora não encontrada");
         });
 
         if (lavadora.getStatus() == Lavadora.Status.QUEBRADA) {
-            log.error("Tentativa de confirmação de agendamento com lavadora quebrada");
+            log.error("Lavadora quebrada");
             throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Lavadora quebrada");
         }
 

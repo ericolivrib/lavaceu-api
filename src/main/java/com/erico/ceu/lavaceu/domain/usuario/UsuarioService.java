@@ -32,7 +32,7 @@ public class UsuarioService {
 
     public UsuarioResponse getUsuariosById(UUID id) {
         Usuario usuarioEntity = usuarioRepository.findById(id).orElseThrow(() -> {
-            log.error("Tentativa de busca de usuário não existente");
+            log.error("Usuário não encontrado");
             return new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
         });
         return UsuarioResponse.fromMoradorEntity(usuarioEntity);
@@ -40,7 +40,7 @@ public class UsuarioService {
 
     public UUID cadastrarUsuarios(CriarUsuarioRequest criarUsuarioRequest) {
         if (usuarioRepository.existsByMatricula(criarUsuarioRequest.matricula())) {
-            log.error("Tentativa de cadastro de usuário com matrícula já existente");
+            log.error("Usuário já existente");
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Usuário já existe");
         }
 
