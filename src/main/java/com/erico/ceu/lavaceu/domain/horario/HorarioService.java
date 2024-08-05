@@ -1,13 +1,13 @@
 package com.erico.ceu.lavaceu.domain.horario;
 
-import com.erico.ceu.lavaceu.domain.agendamento.AgendamentoRepository;
 import com.erico.ceu.lavaceu.domain.horario.dto.CriarHorarioRequest;
 import com.erico.ceu.lavaceu.domain.horario.dto.HorarioResponse;
 import com.erico.ceu.lavaceu.domain.horario.dto.LiberarHorarioRequest;
-import com.erico.ceu.lavaceu.domain.horario.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,18 +20,16 @@ public class HorarioService {
 
     private final HorarioRepository horarioRepository;
     private final HorarioLiberadoRepository horarioLiberadoRepository;
-    private final AgendamentoRepository agendamentoRepository;
 
-    public HorarioService(HorarioRepository horarioRepository, HorarioLiberadoRepository horarioLiberadoRepository, AgendamentoRepository agendamentoRepository) {
+    public HorarioService(HorarioRepository horarioRepository, HorarioLiberadoRepository horarioLiberadoRepository) {
         this.horarioRepository = horarioRepository;
         this.horarioLiberadoRepository = horarioLiberadoRepository;
-        this.agendamentoRepository = agendamentoRepository;
     }
 
     public UUID adicionarHorario(CriarHorarioRequest criarHorarioRequest) {
         if (horarioRepository.existsByDiaSemanaAndHora(criarHorarioRequest.diaSemana(), criarHorarioRequest.hora())) {
             log.error("Tentativa de cadastro de horários com dia da semana e hora já existentes");
-            throw new HorarioJaExistenteException();
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Horário já existente");
         }
 
         UUID horarioId;
@@ -41,7 +39,7 @@ public class HorarioService {
             horarioId = horarioSalvo.getId();
         } catch (PeriodoDiaInvalidoException e) {
             log.error("Tentativa de cadastro de horário com hora inválida: ({})", criarHorarioRequest.hora());
-            throw e;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Período do dia inválido");
         }
 
         return horarioId;
@@ -55,12 +53,12 @@ public class HorarioService {
     public void deletarHorario(UUID horarioId) {
         Horario horario = horarioRepository.findById(horarioId).orElseThrow(() -> {
             log.error("Tentativa de remoção de horário inexistente");
-            return new HorarioNaoEncontradoException();
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Horário não encontrado");
         });
 
         if (horarioLiberadoRepository.existsByHorarioId(horarioId)) {
             log.error("Tentativa de remoção de horário presente em agendamentos");
-            throw new HorarioEmUsoException();
+            throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Horário em uso");
         }
 
         horarioRepository.delete(horario);
@@ -69,16 +67,16 @@ public class HorarioService {
     public UUID liberarHorario(LiberarHorarioRequest liberarHorarioRequest, UUID horarioId) {
         Horario horario = horarioRepository.findById(horarioId).orElseThrow(() -> {
             log.error("Tentativa de liberação de horário inexistente");
-            return new HorarioNaoEncontradoException();
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Horário não encontrado");
         });
 
         if (liberarHorarioRequest.data().isBefore(LocalDate.now())) {
             log.error("Tentativa de liberação de horário com data anterior ao dia de hoje: ({})", liberarHorarioRequest.data());
-            throw new DataHorarioPassadaException();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Horário vencido");
         } else if (horarioLiberadoRepository.existsByHorarioIdAndData(horarioId, liberarHorarioRequest.data())) {
             log.error("Tentativa de liberação de horário já liberado nesta data: ({}, {} às {})",
                     horario.getDiaSemana(), liberarHorarioRequest.data(), horario.getHora());
-            throw new HorarioJaLiberadoException();
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Horário já liberado");
         }
 
         HorarioLiberado horarioLiberadoSalvo = horarioLiberadoRepository.save(liberarHorarioRequest.toHorarioLiberadoEntity(horarioId));

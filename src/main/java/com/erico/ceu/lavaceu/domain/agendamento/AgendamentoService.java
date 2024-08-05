@@ -3,20 +3,15 @@ package com.erico.ceu.lavaceu.domain.agendamento;
 import com.erico.ceu.lavaceu.domain.agendamento.dto.AgendamentoResponse;
 import com.erico.ceu.lavaceu.domain.agendamento.dto.ConfirmarAgendamentoRequest;
 import com.erico.ceu.lavaceu.domain.agendamento.dto.CriarAgendamentoRequest;
-import com.erico.ceu.lavaceu.domain.agendamento.exception.AgendamentoNaoEncontradoException;
-import com.erico.ceu.lavaceu.domain.agendamento.exception.StatusAgendamentoInvalidoException;
 import com.erico.ceu.lavaceu.domain.horario.HorarioLiberado;
 import com.erico.ceu.lavaceu.domain.horario.HorarioLiberadoRepository;
-import com.erico.ceu.lavaceu.domain.horario.exception.HorarioLiberadoCanceladoException;
-import com.erico.ceu.lavaceu.domain.horario.exception.HorarioLiberadoNaoEncontradoException;
-import com.erico.ceu.lavaceu.domain.horario.exception.HorarioLiberadoOcupadoException;
 import com.erico.ceu.lavaceu.domain.lavadora.Lavadora;
 import com.erico.ceu.lavaceu.domain.lavadora.LavadoraRepository;
-import com.erico.ceu.lavaceu.domain.lavadora.exception.LavadoraNaoEncontradaException;
-import com.erico.ceu.lavaceu.domain.lavadora.exception.LavadoraQuebradaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,15 +34,17 @@ public class AgendamentoService {
     public UUID agendar(CriarAgendamentoRequest criarAgendamentoRequest) {
         // todo: buscar horário disponível por UUID e verificar se seu status está VAGO
 
-        var horarioLiberado = horarioLiberadoRepository.findById(criarAgendamentoRequest.horarioLiberadoId())
-                .orElseThrow(HorarioLiberadoNaoEncontradoException::new);
+        var horarioLiberado = horarioLiberadoRepository.findById(criarAgendamentoRequest.horarioLiberadoId()).orElseThrow(() -> {
+            log.error("Horário não liberado");
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Horário não encontrado");
+        });
 
         if (horarioLiberado.getStatus() == HorarioLiberado.Status.OCUPADO) {
             log.error("Tentativa de cadastro de agendamento com horário ocupado, {}", horarioLiberado.getHorario());
-            throw new HorarioLiberadoOcupadoException();
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Horário ocupado");
         } else if (horarioLiberado.getStatus() == HorarioLiberado.Status.CANCELADO) {
             log.error("Tentativa de cadastro de agendamento com horário cancelado");
-            throw new HorarioLiberadoCanceladoException();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Horário cancelado");
         }
 
         horarioLiberado.setStatus(HorarioLiberado.Status.OCUPADO);
@@ -65,22 +62,22 @@ public class AgendamentoService {
     public void confirmarAgendamento(ConfirmarAgendamentoRequest confirmarAgendamentoRequest, UUID agendamentoId) {
         Agendamento agendamento = agendamentoRepository.findById(agendamentoId).orElseThrow(() -> {
             log.error("Tentativa de confirmação de agendamento não existente");
-            return new AgendamentoNaoEncontradoException();
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Agendamento não encontrado");
         });
 
         if (agendamento.getStatus() != Agendamento.Status.AGENDADO) {
             log.error("Tentativa de confirmação de horário não agendado");
-            throw new StatusAgendamentoInvalidoException();
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Horário não agendado");
         }
 
         Lavadora lavadora = lavadoraRepository.findById(confirmarAgendamentoRequest.lavadoraId()).orElseThrow(() -> {
             log.error("Tentativa de escolha de lavadora não existente");
-            return new LavadoraNaoEncontradaException();
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Lavadora não encontrada");
         });
 
         if (lavadora.getStatus() == Lavadora.Status.QUEBRADA) {
             log.error("Tentativa de confirmação de agendamento com lavadora quebrada");
-            throw new LavadoraQuebradaException();
+            throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Lavadora quebrada");
         }
 
         agendamento.setStatus(Agendamento.Status.CONFIRMADO);

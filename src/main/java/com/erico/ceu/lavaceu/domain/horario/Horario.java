@@ -1,7 +1,6 @@
 package com.erico.ceu.lavaceu.domain.horario;
 
 import com.erico.ceu.lavaceu.domain.agendamento.Agendamento;
-import com.erico.ceu.lavaceu.domain.horario.exception.PeriodoDiaInvalidoException;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
