@@ -33,8 +33,7 @@ build/
 .vscode/
 
 ### H2 File Database ###
-db/lavaceu.mv.db
-db/lavaceu.trace.db
+/db/
 
 ### Chaves do JWT ###
 src/main/resources/private.pem
