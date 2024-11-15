@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### H2 File Database ###
+src/main/resources/db/lavaceu.mv.db
+src/main/resources/db/lavaceu.trace.db
