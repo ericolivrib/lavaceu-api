@@ -11,7 +11,7 @@ create table usuarios
 
 create table acessos
 (
-    acesso_id integer generated always as identity,
+    acesso_id integer,
     nome      varchar(8),
     primary key (acesso_id)
 );
