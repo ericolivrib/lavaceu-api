@@ -8,6 +8,14 @@ public class AcessoUsuarioId {
     private Long acessoId;
     private Long usuarioId;
 
+    public AcessoUsuarioId(Long acessoId, Long usuarioId) {
+        this.acessoId = acessoId;
+        this.usuarioId = usuarioId;
+    }
+
+    public AcessoUsuarioId() {
+    }
+
     public Long getAcessoId() {
         return acessoId;
     }

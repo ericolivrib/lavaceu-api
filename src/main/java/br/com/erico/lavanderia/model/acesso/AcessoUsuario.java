@@ -26,6 +26,21 @@ public class AcessoUsuario {
     @UpdateTimestamp
     private Instant ultimoAcesso;
 
+    public AcessoUsuario(
+            AcessoUsuarioId id,
+            Usuario usuario,
+            Acesso acesso,
+            Instant ultimoAcesso
+    ) {
+        this.id = id;
+        this.usuario = usuario;
+        this.acesso = acesso;
+        this.ultimoAcesso = ultimoAcesso;
+    }
+
+    public AcessoUsuario() {
+    }
+
     public void setId(AcessoUsuarioId id) {
         this.id = id;
     }
