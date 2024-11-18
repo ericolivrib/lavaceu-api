@@ -1,11 +1,10 @@
 package br.com.erico.lavanderia.service;
 
 import br.com.erico.lavanderia.dto.TokenDto;
+import com.nimbusds.jwt.JWT;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -15,9 +14,11 @@ import java.util.stream.Collectors;
 public class TokenService {
 
     private final JwtEncoder jwtEncoder;
+    private final JwtDecoder jwtDecoder;
 
-    public TokenService(JwtEncoder jwtEncoder) {
+    public TokenService(JwtEncoder jwtEncoder, JwtDecoder jwtDecoder) {
         this.jwtEncoder = jwtEncoder;
+        this.jwtDecoder = jwtDecoder;
     }
 
     public TokenDto getToken(User user) {
@@ -44,4 +45,14 @@ public class TokenService {
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
+
+    public String validarToken(String token) throws JwtException {
+        Jwt jwt = jwtDecoder.decode(token);
+        return jwt.getTokenValue();
+    }
+
+    public String getSubject(String token) throws JwtException {
+        return jwtDecoder.decode(token).getSubject();
+    }
+
 }
