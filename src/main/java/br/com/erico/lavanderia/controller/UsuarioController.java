@@ -2,6 +2,7 @@ package br.com.erico.lavanderia.controller;
 
 import br.com.erico.lavanderia.model.usuario.Usuario;
 import br.com.erico.lavanderia.service.UsuarioService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    @Transactional
     @PostMapping("/moradores")
     public ResponseEntity<Void> adicionarMorador(@RequestBody @Valid Usuario morador, UriComponentsBuilder uriBuilder) {
         usuarioService.adicionarMorador(morador);
