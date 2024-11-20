@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### H2 File Database ###
+/db/
+
+### Chaves do JWT ###
+src/main/resources/private.pem
+src/main/resources/public.pem
