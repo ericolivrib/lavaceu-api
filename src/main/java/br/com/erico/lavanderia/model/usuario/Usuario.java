@@ -2,6 +2,10 @@ package br.com.erico.lavanderia.model.usuario;
 
 import br.com.erico.lavanderia.model.acesso.AcessoUsuario;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -14,11 +18,24 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usuario_id")
     private Long id;
+
+    @NotBlank(message = "Informe o nome do usuário")
     private String nome;
+
+    @NotBlank(message = "Informe a senha do usuário")
+    @Size(min = 8, message = "A senha deve conter no mínimo 8 caracteres")
     private String senha;
+
+    @NotBlank(message = "Informe o número de telefone do usuário")
+    @Pattern(regexp = "(\\d){2}\\s(\\d){5}-(\\d){4}")
     private String telefone;
+
+    @NotBlank(message = "Informe o número de matrícula do usuário")
+    @Size(min = 7, message = "O número de matrícula deve conter no mínimo 7 caracteres")
     @Column(unique = true)
     private String matricula;
+
+    @NotNull(message = "Informe o número do apartamento do usuário")
     private Integer apartamento;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
