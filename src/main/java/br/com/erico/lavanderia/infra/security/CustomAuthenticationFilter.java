@@ -37,26 +37,31 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         log.info("{} {}", request.getMethod(), request.getRequestURI());
 
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = getAuthorizationToken(request);
 
-        try {
-            if (token != null) {
-                token = token.replace("Bearer", "").trim();
+        if (token != null) {
+            String subject = tokenService.getSubject(token);
 
-                String validatedToken = tokenService.validarToken(token);
+            UserDetails userDetails = loginService.loadUserByUsername(subject);
 
-                if (validatedToken != null) {
-                    String subject = tokenService.getSubject(validatedToken);
-                    UserDetails userDetails = loginService.loadUserByUsername(subject);
-                    var authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
-            }
-        } catch (JwtException e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
+            var authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities()
+            );
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private String getAuthorizationToken(HttpServletRequest request) {
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        if (token != null) {
+            return token.replace("Bearer", "").trim();
+        }
+        return null;
     }
 }

@@ -26,7 +26,7 @@ public class LoginService implements UserDetailsService {
 
         String authorities = usuario.getAcessos()
                 .stream()
-                .map(au -> au.getAcesso().getNome())
+                .map(au -> "ROLE_" + au.getAcesso().getNome())
                 .collect(Collectors.joining(" "));
 
         return User.withUsername(matricula)
