@@ -1,6 +1,7 @@
 package br.com.erico.lavanderia.service;
 
 import br.com.erico.lavanderia.model.acesso.*;
+import br.com.erico.lavanderia.model.usuario.MatriculaExistenteException;
 import br.com.erico.lavanderia.model.usuario.Usuario;
 import br.com.erico.lavanderia.model.usuario.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,10 @@ public class UsuarioService {
     }
 
     public void adicionarMorador(Usuario morador) {
+        if (usuarioRepository.existsByMatricula(morador.getMatricula())) {
+            throw new MatriculaExistenteException();
+        }
+
         morador.setId(null);
         morador.setAcessos(null);
         morador.setNome(morador.getNome().toUpperCase());
