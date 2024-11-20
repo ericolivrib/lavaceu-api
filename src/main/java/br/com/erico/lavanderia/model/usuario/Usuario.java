@@ -100,8 +100,4 @@ public class Usuario {
     public void setAcessos(List<AcessoUsuario> acessos) {
         this.acessos = acessos;
     }
-
-    public boolean isSenhaCorreta(String senha, PasswordEncoder passwordEncoder) {
-        return passwordEncoder.matches(senha, this.senha);
-    }
 }
