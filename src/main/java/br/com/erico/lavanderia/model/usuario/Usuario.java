@@ -2,10 +2,7 @@ package br.com.erico.lavanderia.model.usuario;
 
 import br.com.erico.lavanderia.model.acesso.AcessoUsuario;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -22,6 +19,7 @@ public class Usuario {
     @NotBlank(message = "Informe o nome do usuário")
     private String nome;
 
+    @Email(message = "E-mail inválido")
     @NotBlank(message = "E-mail do usuário é obrigatório")
     @Column(unique = true)
     private String email;
