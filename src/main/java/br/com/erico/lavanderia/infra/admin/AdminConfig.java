@@ -54,6 +54,7 @@ public class AdminConfig implements CommandLineRunner {
                     Usuario novoAdmin = new Usuario(
                             null,
                             "Administrador",
+                            "admin@admin",
                             passwordEncoder.encode(senhaAdmin),
                             "00 00000-0000",
                             matriculaAdmin,

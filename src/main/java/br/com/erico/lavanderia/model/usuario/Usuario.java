@@ -22,6 +22,10 @@ public class Usuario {
     @NotBlank(message = "Informe o nome do usuário")
     private String nome;
 
+    @NotBlank(message = "E-mail do usuário é obrigatório")
+    @Column(unique = true)
+    private String email;
+
     @NotBlank(message = "Informe a senha do usuário")
     @Size(min = 8, message = "A senha deve conter no mínimo 8 caracteres")
     private String senha;
@@ -44,6 +48,7 @@ public class Usuario {
     public Usuario(
             Long id,
             String nome,
+            String email,
             String senha,
             String telefone,
             String matricula,
@@ -52,6 +57,7 @@ public class Usuario {
     ) {
         this.id = id;
         this.nome = nome;
+        this.email = email;
         this.senha = senha;
         this.telefone = telefone;
         this.matricula = matricula;
@@ -76,6 +82,14 @@ public class Usuario {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSenha() {

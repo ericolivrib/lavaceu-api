@@ -1,6 +1,7 @@
 package br.com.erico.lavanderia.service;
 
 import br.com.erico.lavanderia.model.acesso.*;
+import br.com.erico.lavanderia.model.usuario.EmailExistenteException;
 import br.com.erico.lavanderia.model.usuario.MatriculaExistenteException;
 import br.com.erico.lavanderia.model.usuario.Usuario;
 import br.com.erico.lavanderia.model.usuario.UsuarioRepository;
@@ -32,6 +33,10 @@ public class UsuarioService {
     public void adicionarMorador(Usuario morador) {
         if (usuarioRepository.existsByMatricula(morador.getMatricula())) {
             throw new MatriculaExistenteException();
+        }
+
+        if (usuarioRepository.existsByEmail(morador.getEmail())) {
+            throw new EmailExistenteException();
         }
 
         morador.setId(null);
