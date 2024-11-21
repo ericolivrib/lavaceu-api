@@ -39,8 +39,6 @@ public class UsuarioService {
             throw new EmailExistenteException();
         }
 
-        morador.setId(null);
-        morador.setAcessos(null);
         morador.setNome(morador.getNome().toUpperCase());
         morador.setSenha(passwordEncoder.encode(morador.getSenha()));
 
@@ -52,7 +50,7 @@ public class UsuarioService {
                 new AcessoUsuarioId(acesso.getId(), morador.getId()),
                 morador,
                 acesso,
-                Instant.now()
+                null
         );
 
         acessoUsuarioRepository.save(acessoUsuario);
