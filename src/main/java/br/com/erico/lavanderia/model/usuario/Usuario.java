@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "usuarios")
@@ -64,6 +65,25 @@ public class Usuario {
     }
 
     public Usuario() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id)
+                && Objects.equals(nome, usuario.nome)
+                && Objects.equals(email, usuario.email)
+                && Objects.equals(senha, usuario.senha)
+                && Objects.equals(telefone, usuario.telefone)
+                && Objects.equals(matricula, usuario.matricula)
+                && Objects.equals(apartamento, usuario.apartamento)
+                && Objects.equals(acessos, usuario.acessos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, email, senha, telefone, matricula, apartamento, acessos);
     }
 
     public void setId(Long id) {
