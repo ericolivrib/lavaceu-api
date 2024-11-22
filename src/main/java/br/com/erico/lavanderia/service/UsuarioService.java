@@ -39,7 +39,6 @@ public class UsuarioService {
             throw new EmailExistenteException();
         }
 
-        morador.setNome(morador.getNome().toUpperCase());
         morador.setSenha(passwordEncoder.encode(morador.getSenha()));
 
         usuarioRepository.save(morador);
