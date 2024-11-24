@@ -12,7 +12,7 @@ public interface UsuarioProjection {
 
     String getMatricula();
 
-    String getApartamento();
+    Integer getApartamento();
 
     String getAcesso();
 }
