@@ -1,5 +1,6 @@
 package br.com.erico.lavanderia.service;
 
+import br.com.erico.lavanderia.dto.UsuarioProjection;
 import br.com.erico.lavanderia.model.acesso.*;
 import br.com.erico.lavanderia.exception.EmailExistenteException;
 import br.com.erico.lavanderia.exception.MatriculaExistenteException;
@@ -8,7 +9,7 @@ import br.com.erico.lavanderia.model.usuario.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
+import java.util.List;
 
 @Service
 public class UsuarioService {
@@ -53,5 +54,9 @@ public class UsuarioService {
         );
 
         acessoUsuarioRepository.save(acessoUsuario);
+    }
+
+    public List<UsuarioProjection> getUsuariosByAcesso(TipoAcesso tipoAcesso) {
+        return usuarioRepository.findByAcessoId(tipoAcesso.getAcessoId());
     }
 }
