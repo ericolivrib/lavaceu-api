@@ -6,6 +6,8 @@ import br.com.erico.lavanderia.exception.EmailExistenteException;
 import br.com.erico.lavanderia.exception.MatriculaExistenteException;
 import br.com.erico.lavanderia.model.usuario.Usuario;
 import br.com.erico.lavanderia.model.usuario.UsuarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @Service
 public class UsuarioService {
 
+    private static final Logger log = LoggerFactory.getLogger(UsuarioService.class);
     private final PasswordEncoder passwordEncoder;
     private final UsuarioRepository usuarioRepository;
     private final AcessoRepository acessoRepository;
@@ -54,6 +57,21 @@ public class UsuarioService {
         );
 
         acessoUsuarioRepository.save(acessoUsuario);
+    }
+
+    public void cadastrarBolsista(Long usuarioId) {
+        /// Adicionar NoSuchElementException no Exception Handler.
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow();
+        Acesso acesso = acessoRepository.getReferenceById(TipoAcesso.BOLSISTA.getAcessoId());
+
+        AcessoUsuario acessoFromUsuario = new AcessoUsuario(
+                new AcessoUsuarioId(acesso.getId(), usuario.getId()),
+                usuario,
+                acesso,
+                usuario.getAcessos().getFirst().getUltimoAcesso()
+        );
+
+        acessoUsuarioRepository.save(acessoFromUsuario);
     }
 
     public List<UsuarioProjection> getUsuariosByAcesso(TipoAcesso tipoAcesso) {

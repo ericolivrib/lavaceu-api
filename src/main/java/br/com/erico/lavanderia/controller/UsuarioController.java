@@ -35,9 +35,27 @@ public class UsuarioController {
         return ResponseEntity.created(moradorLocation).build();
     }
 
+    @Transactional
+    @PostMapping("/bolsistas/{usuarioId}")
+    public ResponseEntity<Void> adicionarBolsista(@PathVariable("usuarioId") Long usuarioId, UriComponentsBuilder uriBuilder) {
+        usuarioService.cadastrarBolsista(usuarioId);
+
+        URI bolsistaLocation = uriBuilder.path("/usuarios/moradores/{id}")
+                .buildAndExpand(usuarioId)
+                .toUri();
+
+        return ResponseEntity.created(bolsistaLocation).build();
+    }
+
     @GetMapping("/moradores")
     public ResponseEntity<List<UsuarioProjection>> getAllMoradores() {
         List<UsuarioProjection> moradores = usuarioService.getUsuariosByAcesso(TipoAcesso.MORADOR);
+        return ResponseEntity.ok(moradores);
+    }
+
+    @GetMapping("/bolsistas")
+    public ResponseEntity<List<UsuarioProjection>> getAllBolsistas() {
+        List<UsuarioProjection> moradores = usuarioService.getUsuariosByAcesso(TipoAcesso.BOLSISTA);
         return ResponseEntity.ok(moradores);
     }
 }
