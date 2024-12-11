@@ -60,7 +60,6 @@ public class UsuarioService {
     }
 
     public void cadastrarBolsista(Long usuarioId) {
-        /// Adicionar NoSuchElementException no Exception Handler.
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow();
         Acesso acesso = acessoRepository.getReferenceById(TipoAcesso.BOLSISTA.getAcessoId());
 
@@ -76,5 +75,17 @@ public class UsuarioService {
 
     public List<UsuarioProjection> getUsuariosByAcesso(TipoAcesso tipoAcesso) {
         return usuarioRepository.findByAcessoId(tipoAcesso.getAcessoId());
+    }
+
+    public void atualizarUsuario(long usuarioId, Usuario usuario) {
+        Usuario u = usuarioRepository.findById(usuarioId).orElseThrow();
+
+        u.setNome(usuario.getNome());
+        u.setEmail(usuario.getEmail());
+        u.setMatricula(usuario.getMatricula());
+        u.setApartamento(usuario.getApartamento());
+        u.setTelefone(usuario.getTelefone());
+
+        usuarioRepository.save(u);
     }
 }

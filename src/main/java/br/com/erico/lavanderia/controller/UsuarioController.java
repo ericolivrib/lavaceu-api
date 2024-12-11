@@ -58,4 +58,11 @@ public class UsuarioController {
         List<UsuarioProjection> moradores = usuarioService.getUsuariosByAcesso(TipoAcesso.BOLSISTA);
         return ResponseEntity.ok(moradores);
     }
+
+    @Transactional
+    @PutMapping("/{usuarioId}")
+    public ResponseEntity<Void> atualizarUsuario(@PathVariable("usuarioId") Long usuarioId, @RequestBody @Valid Usuario usuario) {
+        usuarioService.atualizarUsuario(usuarioId, usuario);
+        return ResponseEntity.noContent().build();
+    }
 }
