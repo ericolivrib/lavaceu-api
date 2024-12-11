@@ -73,6 +73,10 @@ public class UsuarioService {
         acessoUsuarioRepository.save(acessoFromUsuario);
     }
 
+    public UsuarioProjection getUsuarioById(long usuarioId) {
+        return usuarioRepository.getById(usuarioId).orElseThrow();
+    }
+
     public List<UsuarioProjection> getUsuariosByAcesso(TipoAcesso tipoAcesso) {
         return usuarioRepository.findByAcessoId(tipoAcesso.getAcessoId());
     }

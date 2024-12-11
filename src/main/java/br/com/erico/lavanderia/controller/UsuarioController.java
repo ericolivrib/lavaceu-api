@@ -40,11 +40,17 @@ public class UsuarioController {
     public ResponseEntity<Void> cadastrarBolsista(@PathVariable("id") Long usuarioId, UriComponentsBuilder uriBuilder) {
         usuarioService.cadastrarBolsista(usuarioId);
 
-        URI bolsistaLocation = uriBuilder.path("/usuarios/moradores/{id}")
+        URI bolsistaLocation = uriBuilder.path("/usuarios/bolsistas/{id}")
                 .buildAndExpand(usuarioId)
                 .toUri();
 
         return ResponseEntity.created(bolsistaLocation).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioProjection> getUsuarioById(@PathVariable("id") Long usuarioId) {
+        UsuarioProjection usuario = usuarioService.getUsuarioById(usuarioId);
+        return ResponseEntity.ok(usuario);
     }
 
     @GetMapping("/moradores")

@@ -27,4 +27,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             and au.acesso_id = a.acesso_id
             and a.acesso_id = :acessoId""", nativeQuery = true)
     List<UsuarioProjection> findByAcessoId(@Param("acessoId") long acessoId);
+
+    @Query(value = """
+            select u.usuario_id as id, u.nome, u.email, u.telefone, u.matricula, u.apartamento, a.nome as acesso
+            from usuarios u, acessos_usuarios au, acessos a
+            where au.usuario_id = u.usuario_id
+            and au.acesso_id = a.acesso_id
+            and u.usuario_id = :id limit 1""", nativeQuery = true)
+    Optional<UsuarioProjection> getById(@Param("id") long id);
 }
