@@ -34,7 +34,7 @@ public class UsuarioService {
         this.acessoUsuarioRepository = acessoUsuarioRepository;
     }
 
-    public void adicionarMorador(Usuario morador) {
+    public void cadastrarMorador(Usuario morador) {
         if (usuarioRepository.existsByMatricula(morador.getMatricula())) {
             throw new MatriculaExistenteException();
         }

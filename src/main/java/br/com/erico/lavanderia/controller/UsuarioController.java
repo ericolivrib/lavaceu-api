@@ -25,8 +25,8 @@ public class UsuarioController {
 
     @Transactional
     @PostMapping("/moradores")
-    public ResponseEntity<Void> adicionarMorador(@RequestBody @Valid Usuario morador, UriComponentsBuilder uriBuilder) {
-        usuarioService.adicionarMorador(morador);
+    public ResponseEntity<Void> cadastrarMorador(@RequestBody @Valid Usuario morador, UriComponentsBuilder uriBuilder) {
+        usuarioService.cadastrarMorador(morador);
 
         URI moradorLocation = uriBuilder.path("/usuarios/moradores/{id}")
                 .buildAndExpand(morador.getId())
@@ -37,7 +37,7 @@ public class UsuarioController {
 
     @Transactional
     @PostMapping("/bolsistas/{usuarioId}")
-    public ResponseEntity<Void> adicionarBolsista(@PathVariable("usuarioId") Long usuarioId, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<Void> cadastrarBolsista(@PathVariable("usuarioId") Long usuarioId, UriComponentsBuilder uriBuilder) {
         usuarioService.cadastrarBolsista(usuarioId);
 
         URI bolsistaLocation = uriBuilder.path("/usuarios/moradores/{id}")
