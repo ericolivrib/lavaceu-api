@@ -33,4 +33,44 @@ public class Lavadora {
         this.tempoLavagem = tempoLavagem;
         this.estado = estado;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
+    public Integer getTempoLavagem() {
+        return tempoLavagem;
+    }
+
+    public void setTempoLavagem(Integer tempoLavagem) {
+        this.tempoLavagem = tempoLavagem;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 }
