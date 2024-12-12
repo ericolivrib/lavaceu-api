@@ -2,9 +2,11 @@ package br.com.erico.lavanderia.model.usuario;
 
 import br.com.erico.lavanderia.model.acesso.AcessoUsuario;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "usuarios")
@@ -14,11 +16,29 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usuario_id")
     private Long id;
+
+    @NotBlank(message = "Informe o nome do usuário")
     private String nome;
+
+    @Email(message = "E-mail inválido")
+    @NotBlank(message = "E-mail do usuário é obrigatório")
+    @Column(unique = true)
+    private String email;
+
+    @NotBlank(message = "Informe a senha do usuário")
+    @Size(min = 8, message = "A senha deve conter no mínimo 8 caracteres")
     private String senha;
+
+    @NotBlank(message = "Informe o número de telefone do usuário")
+    @Pattern(regexp = "(\\d){2}\\s(\\d){5}-(\\d){4}")
     private String telefone;
+
+    @NotBlank(message = "Informe o número de matrícula do usuário")
+    @Size(min = 7, message = "O número de matrícula deve conter no mínimo 7 caracteres")
     @Column(unique = true)
     private String matricula;
+
+    @NotNull(message = "Informe o número do apartamento do usuário")
     private Integer apartamento;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -27,6 +47,7 @@ public class Usuario {
     public Usuario(
             Long id,
             String nome,
+            String email,
             String senha,
             String telefone,
             String matricula,
@@ -35,6 +56,7 @@ public class Usuario {
     ) {
         this.id = id;
         this.nome = nome;
+        this.email = email;
         this.senha = senha;
         this.telefone = telefone;
         this.matricula = matricula;
@@ -43,6 +65,25 @@ public class Usuario {
     }
 
     public Usuario() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id)
+                && Objects.equals(nome, usuario.nome)
+                && Objects.equals(email, usuario.email)
+                && Objects.equals(senha, usuario.senha)
+                && Objects.equals(telefone, usuario.telefone)
+                && Objects.equals(matricula, usuario.matricula)
+                && Objects.equals(apartamento, usuario.apartamento)
+                && Objects.equals(acessos, usuario.acessos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, email, senha, telefone, matricula, apartamento, acessos);
     }
 
     public void setId(Long id) {
@@ -59,6 +100,14 @@ public class Usuario {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSenha() {
@@ -99,9 +148,5 @@ public class Usuario {
 
     public void setAcessos(List<AcessoUsuario> acessos) {
         this.acessos = acessos;
-    }
-
-    public boolean isSenhaCorreta(String senha, PasswordEncoder passwordEncoder) {
-        return passwordEncoder.matches(senha, this.senha);
     }
 }

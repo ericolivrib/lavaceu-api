@@ -46,11 +46,6 @@ public class TokenService {
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-    public String validarToken(String token) throws JwtException {
-        Jwt jwt = jwtDecoder.decode(token);
-        return jwt.getTokenValue();
-    }
-
     public String getSubject(String token) throws JwtException {
         return jwtDecoder.decode(token).getSubject();
     }

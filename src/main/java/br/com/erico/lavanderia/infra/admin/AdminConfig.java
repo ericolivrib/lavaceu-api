@@ -47,17 +47,18 @@ public class AdminConfig implements CommandLineRunner {
         Acesso acessoAdmin = acessoRepository.getReferenceByNome(TipoAcesso.ADMIN.name());
         Optional<Usuario> adminExistente = usuarioRepository.findByMatricula(matriculaAdmin);
 
-        adminExistente.ifPresentOrElse((u) -> log.info("Usuário administrador cadastrado"),
+        adminExistente.ifPresentOrElse((u) -> log.info("Usuário administrador configurado"),
                 () -> {
-                    log.info("Inserindo usuário administrador");
+                    log.info("Configurando usuário administrador");
 
                     Usuario novoAdmin = new Usuario(
                             null,
                             "Administrador",
+                            "admin@admin",
                             passwordEncoder.encode(senhaAdmin),
-                            null,
+                            "00 00000-0000",
                             matriculaAdmin,
-                            null,
+                            1000,
                             null
                     );
 
