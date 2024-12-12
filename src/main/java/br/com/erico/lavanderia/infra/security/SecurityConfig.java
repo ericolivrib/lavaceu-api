@@ -33,7 +33,12 @@ public class SecurityConfig {
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/nutrigest/api/usuarios/moradores").hasAnyAuthority("ROLE_ADMIN", "ROLE_BOLSISTA")
+                        .requestMatchers(HttpMethod.POST, "/lavaceu/api/usuarios/moradores").hasAnyAuthority("ROLE_ADMIN", "ROLE_BOLSISTA")
+                        .requestMatchers(HttpMethod.POST, "/lavaceu/api/lavadoras").hasAnyAuthority("ROLE_ADMIN", "ROLE_BOLSISTA")
+                        .requestMatchers(HttpMethod.GET, "/lavaceu/api/lavadoras").hasAnyAuthority("ROLE_ADMIN", "ROLE_BOLSISTA")
+                        .requestMatchers(HttpMethod.GET, "/lavaceu/api/lavadoras/{id}").hasAnyAuthority("ROLE_ADMIN", "ROLE_BOLSISTA")
+                        .requestMatchers(HttpMethod.PUT, "lavaceu/api/lavadoras/{id}").hasAnyAuthority("ROLE_ADMIN", "ROLE_BOLSISTA")
+                        .requestMatchers(HttpMethod.PATCH, "lavaceu/api/lavadoras/{id}/estado").hasAnyAuthority("ROLE_ADMIN", "ROLE_BOLSISTA")
                         .anyRequest().authenticated())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
