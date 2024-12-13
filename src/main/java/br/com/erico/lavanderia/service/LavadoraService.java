@@ -31,7 +31,6 @@ public class LavadoraService {
         Lavadora l = getLavadoraById(id);
 
         l.setMarca(lavadora.getMarca());
-        l.setNumero(lavadora.getNumero());
         l.setTempoLavagem(lavadora.getTempoLavagem());
 
         lavadoraRepository.save(l);

@@ -17,10 +17,6 @@ public class Lavadora {
     @Column(name = "marca")
     private String marca;
 
-    @NotNull(message = "Informe o número da lavadora")
-    @Column(name = "numero")
-    private Integer numero;
-
     @NotNull(message = "Informe o tempo de lavagem")
     @Column(name = "tempo_lavagem")
     private Integer tempoLavagem;
@@ -32,10 +28,9 @@ public class Lavadora {
     public Lavadora() {
     }
 
-    public Lavadora(Long id, String marca, Integer numero, Integer tempoLavagem, String estado) {
+    public Lavadora(Long id, String marca, Integer tempoLavagem, String estado) {
         this.id = id;
         this.marca = marca;
-        this.numero = numero;
         this.tempoLavagem = tempoLavagem;
         this.estado = estado;
     }
@@ -54,14 +49,6 @@ public class Lavadora {
 
     public void setMarca(String marca) {
         this.marca = marca;
-    }
-
-    public Integer getNumero() {
-        return numero;
-    }
-
-    public void setNumero(Integer numero) {
-        this.numero = numero;
     }
 
     public Integer getTempoLavagem() {
