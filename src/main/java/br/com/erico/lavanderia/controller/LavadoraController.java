@@ -3,6 +3,7 @@ package br.com.erico.lavanderia.controller;
 import br.com.erico.lavanderia.dto.EstadoLavadoraDto;
 import br.com.erico.lavanderia.model.lavadora.Lavadora;
 import br.com.erico.lavanderia.service.LavadoraService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,7 +22,7 @@ public class LavadoraController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> cadastrarLavadora(@RequestBody Lavadora lavadora, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<Void> cadastrarLavadora(@RequestBody @Valid Lavadora lavadora, UriComponentsBuilder uriBuilder) {
         lavadoraService.cadastrarLavadora(lavadora);
         URI uri = uriBuilder.path("/lavadoras/{id}").build(lavadora.getId());
         return ResponseEntity.created(uri).build();
@@ -40,7 +41,7 @@ public class LavadoraController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> atualizarLavadora(@PathVariable("id") long lavadoraId, @RequestBody Lavadora lavadora) {
+    public ResponseEntity<Void> atualizarLavadora(@PathVariable("id") long lavadoraId, @Valid @RequestBody Lavadora lavadora) {
         lavadoraService.atualizarLavadora(lavadoraId, lavadora);
         return ResponseEntity.noContent().build();
     }
@@ -48,6 +49,12 @@ public class LavadoraController {
     @PatchMapping("/{id}/estado")
     public ResponseEntity<Void> atualizarEstadoLavadora(@PathVariable("id") long lavadoraId, @RequestBody EstadoLavadoraDto estadoLavadoraDto) {
         lavadoraService.atualizarEstadoLavadora(lavadoraId, estadoLavadoraDto.estado());
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarLavadora(@PathVariable("id") long lavadoraId) {
+        lavadoraService.deletarLavadora(lavadoraId);
         return ResponseEntity.noContent().build();
     }
 }
