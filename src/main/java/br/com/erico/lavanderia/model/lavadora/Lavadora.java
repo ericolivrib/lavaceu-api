@@ -1,6 +1,8 @@
 package br.com.erico.lavanderia.model.lavadora;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "lavadoras")
@@ -11,15 +13,19 @@ public class Lavadora {
     @Column(name = "lavadora_id")
     private Long id;
 
+    @NotBlank(message = "Informe o nome da marca da lavadora")
     @Column(name = "marca")
     private String marca;
 
+    @NotNull(message = "Informe o número da lavadora")
     @Column(name = "numero")
     private Integer numero;
 
+    @NotNull(message = "Informe o tempo de lavagem")
     @Column(name = "tempo_lavagem")
     private Integer tempoLavagem;
 
+    @NotBlank(message = "Informe o estado da lavadora")
     @Column(name = "estado")
     private String estado;
 
