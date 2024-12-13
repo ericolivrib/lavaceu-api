@@ -3,6 +3,7 @@ package br.com.erico.lavanderia.model.lavadora;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "lavadoras")
@@ -21,7 +22,7 @@ public class Lavadora {
     @Column(name = "tempo_lavagem")
     private Integer tempoLavagem;
 
-    @NotBlank(message = "Informe o estado da lavadora")
+    @Pattern(regexp = "DISPONIVEL|OCUPADA|MANUTENCAO|QUEBRADA", message = "Informe um dos valores: DISPONIVEL, OCUPADA, MANUTENCAO ou QUEBRADA")
     @Column(name = "estado")
     private String estado;
 
