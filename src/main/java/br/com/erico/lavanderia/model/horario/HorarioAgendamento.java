@@ -1,37 +1,36 @@
 package br.com.erico.lavanderia.model.horario;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "horarios")
-public class Horario {
+public class HorarioAgendamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "horario_id")
     public Long id;
 
-    @NotBlank(message = "Informe o período")
-    @Pattern(regexp = "MANHA|TARDE|NOITE", message = "Período deve ser MANHA, TARDE ou NOITE")
+    @Enumerated(EnumType.STRING)
     @Column(name = "periodo")
-    public String periodo;
+    public PeriodoDia periodo;
 
     @NotNull(message = "Informe a hora")
+    @HorarioValido
     @Column(name = "hora")
-    public LocalDate hora;
+    public LocalTime horario;
 
-    public Horario() {
+    public HorarioAgendamento() {
     }
 
-    public Horario(Long id, String periodo, LocalDate hora) {
+    public HorarioAgendamento(Long id, PeriodoDia periodo, LocalTime horario) {
         this.id = id;
         this.periodo = periodo;
-        this.hora = hora;
+        this.horario = horario;
     }
 
     public Long getId() {
@@ -42,19 +41,19 @@ public class Horario {
         this.id = id;
     }
 
-    public String getPeriodo() {
+    public PeriodoDia getPeriodo() {
         return periodo;
     }
 
-    public void setPeriodo(String periodo) {
+    public void setPeriodo(PeriodoDia periodo) {
         this.periodo = periodo;
     }
 
-    public LocalDate getHora() {
-        return hora;
+    public LocalTime getHorario() {
+        return horario;
     }
 
-    public void setHora(LocalDate hora) {
-        this.hora = hora;
+    public void setHorario(LocalTime hora) {
+        this.horario = hora;
     }
 }
