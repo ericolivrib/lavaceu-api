@@ -32,6 +32,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/swagger-ui/*").permitAll()
+                        .requestMatchers("/v3/api-docs/*").permitAll()
+                        .requestMatchers("/v3/api-docs").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/lavaceu/api/usuarios/moradores").hasAnyAuthority("ROLE_ADMIN", "ROLE_BOLSISTA")
 
